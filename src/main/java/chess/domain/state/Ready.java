@@ -7,7 +7,7 @@ public class Ready implements ChessGameState {
     private final Board board;
 
     public Ready() {
-        this.board = BoardRepository.of();
+        this.board = BoardRepository.createNewBoard();
     }
 
     @Override
@@ -17,7 +17,7 @@ public class Ready implements ChessGameState {
 
     @Override
     public ChessGameState start() {
-        return new Started();
+        return new Started(board);
     }
 
     @Override
@@ -27,6 +27,6 @@ public class Ready implements ChessGameState {
 
     @Override
     public ResponseDto getResponse() {
-        return null;
+        return new ResponseDto(board.getDto());
     }
 }

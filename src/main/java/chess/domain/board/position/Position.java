@@ -21,4 +21,12 @@ public class Position {
                 .findAny()
                 .orElseThrow(IllegalArgumentException::new);
     }
+
+    public File getFile() {
+        return file;
+    }
+
+    public Rank getRank() {
+        return rank;
+    }
 }

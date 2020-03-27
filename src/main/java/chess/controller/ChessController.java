@@ -15,8 +15,8 @@ public class ChessController {
                 RequestDto request = InputView.inputRequest();
                 ResponseDto responseDto = chessGame.play(request);
                 OutputView.printResponse(responseDto);
-            } catch (Exception e) {
-                continue;
+            } catch (Exception exception) {
+                OutputView.printErrorMessage(exception);
             }
         }
     }

@@ -1,8 +1,15 @@
 package chess.domain.state;
 
 import chess.controller.dto.ResponseDto;
+import chess.domain.board.Board;
 
 public class Started extends Ready {
+    private final Board board;
+
+    public Started(Board board) {
+        this.board = board;
+    }
+
     @Override
     public boolean isEnd() {
         return false;
@@ -20,6 +27,6 @@ public class Started extends Ready {
 
     @Override
     public ResponseDto getResponse() {
-        return null;
+        return new ResponseDto(board.getDto());
     }
 }
