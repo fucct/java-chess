@@ -21,6 +21,11 @@ public class ChessGame {
     }
 
     public ResponseDto play(RequestDto request) {
+        Command command = request.getCommand();
+        if (command == Command.MOVE) {
+            currentState = request.getCommand().move(currentState, request.getParameters());
+            return currentState.getResponse();
+        }
         currentState = request.getCommand().run(currentState);
         return currentState.getResponse();
     }

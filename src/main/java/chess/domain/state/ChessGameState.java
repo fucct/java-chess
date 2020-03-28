@@ -3,11 +3,15 @@ package chess.domain.state;
 import chess.controller.dto.ResponseDto;
 import chess.exception.IllegalCommandException;
 
+import java.util.List;
+
 public interface ChessGameState {
 
     boolean isEnd();
 
     ChessGameState start();
+
+    ChessGameState move(List<String> parameters);
 
     ChessGameState end();
 

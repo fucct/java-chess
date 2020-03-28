@@ -3,8 +3,10 @@ package chess.domain.state;
 import chess.controller.dto.ResponseDto;
 import chess.domain.board.Board;
 
+import java.util.List;
+
 public class Ready implements ChessGameState {
-    private final Board board;
+    protected final Board board;
 
     public Ready() {
         this.board = BoardRepository.createNewBoard();
@@ -18,6 +20,11 @@ public class Ready implements ChessGameState {
     @Override
     public ChessGameState start() {
         return new Started(board);
+    }
+
+    @Override
+    public ChessGameState move(List<String> parameters) {
+        throw new UnsupportedOperationException("아직 게임이 시작되지 않았습니다.");
     }
 
     @Override

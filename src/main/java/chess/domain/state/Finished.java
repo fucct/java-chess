@@ -3,12 +3,12 @@ package chess.domain.state;
 import chess.controller.dto.ResponseDto;
 import chess.domain.board.Board;
 
-public class Finished extends Started {
-    private final Board board;
+import java.util.List;
 
-    public Finished(Board board, Board board1) {
+public class Finished extends Started {
+
+    public Finished(Board board) {
         super(board);
-        this.board = board1;
     }
 
     @Override
@@ -18,16 +18,22 @@ public class Finished extends Started {
 
     @Override
     public ChessGameState start() {
-        return null;
+        ChessGameState nextState = new Ready();
+        return nextState.start();
+    }
+
+    @Override
+    public ChessGameState move(List<String> parameters) {
+        throw new UnsupportedOperationException("게임이 종료되었습니다.");
     }
 
     @Override
     public ChessGameState end() {
-        return null;
+        throw new UnsupportedOperationException("게임이 이미 종료되었습니다.");
     }
 
     @Override
     public ResponseDto getResponse() {
-        return null;
+        return new ResponseDto(board.getDto());
     }
 }
