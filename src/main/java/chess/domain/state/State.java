@@ -3,12 +3,8 @@ package chess.domain.state;
 import chess.domain.MoveParameter;
 import chess.domain.Turn;
 import chess.domain.board.Board;
-import chess.domain.piece.PieceState;
 import chess.domain.player.Player;
-import chess.domain.position.Position;
 import chess.domain.result.Status;
-
-import java.util.Map;
 
 public interface State {
 
@@ -24,7 +20,7 @@ public interface State {
 
     Board getBoard();
 
-    Map<Position, PieceState> getRemainPiece(Player player);
-
     Status getStatus();
+
+    Player getWinner();
 }

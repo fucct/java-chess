@@ -3,13 +3,8 @@ package chess.domain.state;
 import chess.domain.MoveParameter;
 import chess.domain.Turn;
 import chess.domain.board.Board;
-import chess.domain.piece.PieceState;
 import chess.domain.player.Player;
-import chess.domain.position.Position;
 import chess.domain.result.Status;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class RunningState implements State {
 
@@ -28,16 +23,12 @@ public class RunningState implements State {
 
     @Override
     public State move(MoveParameter moveParameter, Turn turn) {
-        Map<Player, Double> status = new HashMap<>();
         board.move(moveParameter.getSource(), moveParameter.getTarget(), turn);
         if (board.isLost(Player.WHITE)) {
-            status.put(Player.BLACK, DEFAULT);
-            return new EndState(board);
+            return new EndState(board, Player.BLACK);
         }
         if (board.isLost(Player.BLACK)) {
-
-            status.put(Player.WHITE, DEFAULT);
-            return new EndState(board);
+            return new EndState(board, Player.WHITE);
         }
         return this;
     }
@@ -53,12 +44,12 @@ public class RunningState implements State {
     }
 
     @Override
-    public Map<Position, PieceState> getRemainPiece(Player player) {
-        return board.getRemainPieces(player);
+    public Status getStatus() {
+        throw new UnsupportedOperationException("게임이 아직 종료되지 않았습니다.");
     }
 
     @Override
-    public Status getStatus() {
+    public Player getWinner() {
         throw new UnsupportedOperationException("게임이 아직 종료되지 않았습니다.");
     }
 

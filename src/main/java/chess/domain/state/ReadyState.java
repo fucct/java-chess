@@ -4,12 +4,8 @@ import chess.domain.MoveParameter;
 import chess.domain.Turn;
 import chess.domain.board.Board;
 import chess.domain.board.BoardInitializer;
-import chess.domain.piece.PieceState;
 import chess.domain.player.Player;
-import chess.domain.position.Position;
 import chess.domain.result.Status;
-
-import java.util.Map;
 
 public class ReadyState implements State {
 
@@ -26,7 +22,7 @@ public class ReadyState implements State {
 
     @Override
     public State move(MoveParameter moveParameter, Turn turn) {
-        throw new UnsupportedOperationException("게임이 시작되지 않았습니다.");
+        throw new UnsupportedOperationException("아직 게임이 시작되지 않았습니다.");
     }
 
     @Override
@@ -45,12 +41,12 @@ public class ReadyState implements State {
     }
 
     @Override
-    public Map<Position, PieceState> getRemainPiece(Player player) {
+    public Status getStatus() {
         throw new UnsupportedOperationException("아직 게임이 시작되지 않았습니다.");
     }
 
     @Override
-    public Status getStatus() {
+    public Player getWinner() {
         throw new UnsupportedOperationException("아직 게임이 시작되지 않았습니다.");
     }
 

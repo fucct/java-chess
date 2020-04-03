@@ -3,6 +3,7 @@ package chess.domain;
 import chess.domain.position.Position;
 
 import java.util.List;
+import java.util.Objects;
 
 public class MoveParameter {
     private final Position source;
@@ -28,7 +29,7 @@ public class MoveParameter {
     }
 
     private static void validate(List<String> parameters) {
-        if (parameters.size() != 2) {
+        if (Objects.isNull(parameters) || parameters.size() != 2) {
             throw new IllegalArgumentException("이동하기 위해서는 source와 target 위치를 입력하셔야 합니다.");
         }
     }

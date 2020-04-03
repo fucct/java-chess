@@ -42,4 +42,8 @@ public class ChessGame {
     public Status getStatus() {
         return state.getStatus();
     }
+
+    public Player getWinner() {
+        return state.getWinner();
+    }
 }

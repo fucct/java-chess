@@ -29,16 +29,19 @@ public class ChessController {
                         break;
                     case END:
                         chessGame.end();
-                        board = chessGame.getBoard();
-                        responseDto = ResponseDto.of(createBoardDto(board));
-                        OutputView.printResponse(responseDto);
+                        OutputView.printStatus(chessGame.getStatus());
+                        OutputView.printWinner(chessGame.getWinner());
                         break;
                     case MOVE:
                         chessGame.move(MoveParameter.of(requestDto.getParameter()));
+                        if (chessGame.isEnd()) {
+                            OutputView.printWinner(chessGame.getWinner());
+                            break;
+                        }
+                        chessGame.move(MoveParameter.of(requestDto.getParameter()));
+
                         board = chessGame.getBoard();
-                        responseDto = ResponseDto.of(createBoardDto(board));
-                        OutputView.printResponse(responseDto);
-                        break;
+
                     case STATUS:
                         chessGame.status();
                         OutputView.printStatus(chessGame.getStatus());
@@ -46,8 +49,8 @@ public class ChessController {
                     case UNKNOWN:
                         throw new IllegalArgumentException();
                 }
-            } catch (IllegalArgumentException ie) {
-                System.out.println(ie.getMessage());
+            } catch (IllegalArgumentException | UnsupportedOperationException e) {
+                System.out.println(e.getMessage());
             }
         }
     }

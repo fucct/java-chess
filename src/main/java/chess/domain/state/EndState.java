@@ -21,9 +21,16 @@ public class EndState implements State {
     private static final int PAWN_DUPLICATION_COUNT = 1;
 
     private final Status status;
+    private final Player winner;
+
+    public EndState(Board board, Player winner) {
+        this.status = createStatus(board);
+        this.winner = winner;
+    }
 
     public EndState(Board board) {
         this.status = createStatus(board);
+        this.winner = status.getWinner();
     }
 
     @Override
@@ -43,7 +50,7 @@ public class EndState implements State {
 
     @Override
     public State status() {
-        throw new UnsupportedOperationException("이미 종료 되었습니다.");
+        return this;
     }
 
     @Override
@@ -57,11 +64,6 @@ public class EndState implements State {
     }
 
     @Override
-    public Map<Position, PieceState> getRemainPiece(Player player) {
-        throw new UnsupportedOperationException("이미 종료 되었습니다.");
-    }
-
-    @Override
     public boolean isEnd() {
         return true;
     }
@@ -72,20 +74,20 @@ public class EndState implements State {
         double whiteSum = 0;
 
         for (File file : File.values()) {
-            blackSum += getPawnPointsByFile(file, Player.BLACK);
-            whiteSum += getPawnPointsByFile(file, Player.WHITE);
+            blackSum += getPawnPointsByFile(file, Player.BLACK, board);
+            whiteSum += getPawnPointsByFile(file, Player.WHITE, board);
         }
 
-        blackSum = getPlayerSum(blackSum, Player.BLACK);
-        whiteSum = getPlayerSum(whiteSum, Player.WHITE);
+        blackSum = getPlayerSum(blackSum, Player.BLACK, board);
+        whiteSum = getPlayerSum(whiteSum, Player.WHITE, board);
 
         status.put(Player.BLACK, blackSum);
         status.put(Player.WHITE, whiteSum);
         return new Status(Collections.unmodifiableMap(status));
     }
 
-    private double getPlayerSum(double blackSum, Player player) {
-        blackSum += getRemainPiece(player)
+    private double getPlayerSum(double blackSum, Player player, Board board) {
+        blackSum += getRemainPiece(player, board)
                 .values()
                 .stream()
                 .filter(piece -> !(piece instanceof Pawn))
@@ -94,15 +96,14 @@ public class EndState implements State {
         return blackSum;
     }
 
-    @Override
     public Map<Position, PieceState> getRemainPiece(Player player, Board board) {
         return board.getRemainPieces(player);
     }
 
-    private double getPawnPointsByFile(File file, Player player) {
+    private double getPawnPointsByFile(File file, Player player, Board board) {
 
         /* 해당 file의 PAWN 점수합을 계산한다 */
-        double duplicatedPawnCount = getDuplicatedPawnCount(file, player);
+        double duplicatedPawnCount = getDuplicatedPawnCount(file, player, board);
         if (duplicatedPawnCount > PAWN_DUPLICATION_COUNT) {
             return duplicatedPawnCount * DUPLICATED_PAWN_POINT;
         }
@@ -110,14 +111,18 @@ public class EndState implements State {
 
     }
 
-    private double getDuplicatedPawnCount(File file, Player player) {
+    private double getDuplicatedPawnCount(File file, Player player, Board board) {
         /* 해당 file의 PAWN 개수합을 계산한다 */
-        return getRemainPiece(player)
+        return getRemainPiece(player, board)
                 .entrySet()
                 .stream()
                 .filter(entry -> entry.getValue() instanceof Pawn)
                 .filter(entry -> entry.getKey().isSameFile(file))
                 .mapToDouble(entry -> entry.getValue().getPoint())
                 .sum();
+    }
+
+    public Player getWinner() {
+        return winner;
     }
 }
