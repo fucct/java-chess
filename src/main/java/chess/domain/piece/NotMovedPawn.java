@@ -55,6 +55,4 @@ public class NotMovedPawn extends AttackablePawn {
         //MovedPawn 리턴
         return MovedPawn.of(position, player);
     }
-
-
 }

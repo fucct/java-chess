@@ -20,6 +20,5 @@ public class Status {
             return Player.WHITE;
         }
         return Player.BLACK;
-
     }
 }
